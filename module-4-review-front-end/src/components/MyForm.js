@@ -1,34 +1,31 @@
-import React, {Component} from 'react'
-import { Button, Checkbox, Form } from 'semantic-ui-react'
-
+import React, { Component } from 'react'
+import { Button, Form } from 'semantic-ui-react'
 
 class MyForm extends Component {
 
   constructor(){
     super()
     this.state={
-      link:"",
-      caption:""
+      link: "",
+      caption: ""
     }
   }
 
-  handleChange(e){
-    const name = e.target.name
-    const value = e.target.value
+  handleChange(e) {
+    const { name, value } = e.target
     this.setState({
       [name]: value
     })
-
   }
 
   handleSubmit(e){
     e.preventDefault()
     const params = Object.assign({}, this.state)
     this.props.submit(params)
-    this.state={
-      link:"",
-      caption:""
-    }
+    this.setState({
+      link: "",
+      caption: ""
+    })
   }
 
   render(){
@@ -36,7 +33,7 @@ class MyForm extends Component {
       <Form className="MyForm" onSubmit={this.handleSubmit.bind(this)}>
         <Form.Field>
           <label>Link</label>
-        <input name="link" placeholder='image URL' value={this.state.link} onChange={this.handleChange.bind(this)} />
+          <input name="link" placeholder='image URL' value={this.state.link} onChange={this.handleChange.bind(this)} />
         </Form.Field>
         <Form.Field>
           <label>Caption</label>
@@ -47,6 +44,5 @@ class MyForm extends Component {
     )
   }
 }
-
 
 export default MyForm;
