@@ -23,12 +23,26 @@ class MyForm extends Component {
 
   handleSubmit(e){
     e.preventDefault()
-    const params = Object.assign({}, this.state)
-    this.props.submit(params)
-    this.state={
-      link:"",
-      caption:""
-    }
+
+    fetch('http://localhost:3000/api/v1/pictures', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'accept': 'application/json'
+      },
+      body: JSON.stringify({
+        picture:this.state
+      })
+    }).then(response =>( response.json() ))
+      .then( picture =>{
+
+        this.props.addPicture()
+        this.setState({
+          link:"",
+          caption:""
+        },()=>(this.props.history.push("/pictures")))
+      })
+
   }
 
   render(){

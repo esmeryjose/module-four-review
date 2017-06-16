@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { Route,Switch } from 'react-router-dom'
-import MyForm from './MyForm'
+import FormContainer from './FormContainer'
 import PictureList from './PictureList'
 import ShowPage from './ShowPage'
 
@@ -65,9 +65,9 @@ class PictureContainer extends Component {
       })
   }
 
-  renderForm(){
-    return <MyForm submit={this.submitNewPicture.bind(this)}/>
-  }
+  // renderForm(){
+  //   return <MyForm submit={this.submitNewPicture.bind(this)}/>
+  // }
 
   componentDidMount(){
     fetch('http://localhost:3000/api/v1/pictures')
@@ -77,11 +77,21 @@ class PictureContainer extends Component {
       })
   }
 
+  addPicture(picture){
+    this.setState(pState=> (
+      { pictures: [...pState.pictures,picture]}
+    ))
+  }
+
+  renderForm(){
+    return <FormContainer addPicture={this.addPicture.bind(this)}/>
+  }
+
   render(){
     return(
       <Switch>
-        <Route path='/pictures/new' component={this.renderForm.bind(this)}/>
-        <Route path='/pictures/:id' render={this.renderShow.bind(this)}/>
+        <Route path='/pictures/new' render={this.renderForm.bind(this)}/>
+        <Route path='/pictures/:id' component={this.renderShow.bind(this)}/>
         <Route render={ this.renderPictures.bind(this) } />
       </Switch>
     )
