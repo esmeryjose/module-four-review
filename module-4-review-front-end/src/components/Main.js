@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 import {TheHeader,NavBar} from './Nav'
 import PictureContainer from './PictureContainer'
 import '../css/App.css';
@@ -8,12 +8,13 @@ class Main extends Component {
 
   constructor(){
     super()
-    this.state={
-      theSearch:""
+    this.state = {
+      theSearch: ""
     }
   }
 
-  updateSearch(searchTerm){
+  updateSearch = searchTerm => {
+    debugger;
     this.setState({
       theSearch: searchTerm
     })
@@ -25,14 +26,16 @@ class Main extends Component {
 
   render() {
     return (
-      <div className="App">
-        <TheHeader/>
-        <NavBar updateSearch={this.updateSearch.bind(this)}/>
-        <Switch>
-          <Route path="/pictures" render={this.displayPictureContainer.bind(this)}/>
-          <Redirect from="/" exact to="/pictures" />
-        </Switch>
-      </div>
+      <Router>
+        <div className="App">
+          <TheHeader/>
+          <NavBar updateSearch={this.updateSearch}/>
+          <Switch>
+            <Route path="/pictures" render={this.displayPictureContainer.bind(this)}/>
+            <Redirect from="/" exact to="/pictures" />
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
