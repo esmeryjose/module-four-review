@@ -14,7 +14,6 @@ class Main extends Component {
   }
 
   updateSearch = searchTerm => {
-    debugger;
     this.setState({
       theSearch: searchTerm
     })
