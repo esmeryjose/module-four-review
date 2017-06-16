@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom'
-import { Input, Menu, Segment, Header } from 'semantic-ui-react'
-import createHistory from 'history/createBrowserHistory'
-
-
-const history = createHistory()
+import { Input, Menu, Header } from 'semantic-ui-react'
 
 class NavBar extends Component{
 
@@ -12,20 +8,27 @@ class NavBar extends Component{
     super(props)
     this.state = {
       activeItem: 'home',
-      input:""
+      input: ""
     }
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleItemClick = (e, { name }) => {
+  handleItemClick = (e, name) => {
+    e.preventDefault()
     this.setState({ activeItem: name })
   }
 
-  handleChange(e){
+  handleChange(e, history) {
     const input = e.target.value
+
+    if (!this.state.input) {
+      console.log('state input is invalid')
+      history.push('/pictures')
+    }
+
     this.setState({
-      input:input
-    },()=>{
-      // debugger
+      input
+    }, () => {
       this.props.updateSearch(input)
     })
     if (!this.state.input) {
@@ -35,20 +38,17 @@ class NavBar extends Component{
 
   render() {
     const { activeItem } = this.state
+
     return (
       <div>
         <Menu pointing>
-          <NavLink to={"/pictures"}>Pictures
-            {/* <Menu.Item name='home' active={activeItem === 'home'} onClick={this.handleItemClick} /> */}
+          <NavLink to="/pictures" className="item" activeClassName="active" isActive={() => activeItem === 'home'} onClick={(e) => this.handleItemClick(e, 'home')} >
+            Home
           </NavLink>
-          <NavLink to={"/pictures/new"}>New Picture
-            {/* <Menu.Item name='Add Picture' active={activeItem === 'messages'} onClick={this.handleItemClick} /> */}
+          <NavLink to="/pictures/new" className="item" activeClassName="active" isActive={() => activeItem === 'messages'} onClick={(e) => this.handleItemClick(e, 'messages')} >
+            Add Picture
           </NavLink>
-          <Menu.Menu position='right'>
-            <Menu.Item>
-              <Input icon='search' value={this.state.input} placeholder='Search...' onChange={this.handleChange.bind(this)} />
-            </Menu.Item>
-          </Menu.Menu>
+          <SearchBar input={this.state.input} handleChange={this.handleChange} />
         </Menu>
       </div>
     )
@@ -60,5 +60,13 @@ const TheHeader = () => (
     THE SUPER-DUPER FAKE INSTAGRAM APP
   </Header>
 )
+
+const SearchBar = withRouter(({ history, input, handleChange }) => (
+  <Menu.Menu position='right'>
+    <Menu.Item>
+      <Input icon='search' value={input} placeholder='Search...' onChange={(event) => handleChange(event, history)} />
+    </Menu.Item>
+  </Menu.Menu>
+))
 
 export { TheHeader, NavBar };

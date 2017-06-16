@@ -43,7 +43,7 @@ class PictureContainer extends Component {
 
   renderShow(routerProps){
     const id = routerProps.match.params.id
-    const picture = this.state.pictures.filter(pic=> pic.id === parseInt(id))
+    const picture = this.state.pictures.filter(pic => pic.id === +id)
     return <ShowPage picture={picture[0]} remove={this.deletePicture.bind(this)}/>
   }
 
